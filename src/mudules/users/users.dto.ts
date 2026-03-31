@@ -13,7 +13,7 @@ export class UsersRequestDTO {
   @ApiProperty({ description: 'user password' })
   @IsString()
   @IsNotEmpty()
-  Password: string
+  password: string
 }
 
 export class UsersListItemDTO{
