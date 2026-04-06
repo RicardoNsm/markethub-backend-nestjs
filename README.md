@@ -1,3 +1,5 @@
+# 🚀 API RESTful com NestJS
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
@@ -21,78 +23,202 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+------------------------------------------------------------------------
 
-## Project setup
+## 📌 Descrição
 
-```bash
-$ npm install
+Esta é uma API RESTful desenvolvida utilizando o framework NestJS,
+substituindo uma versão anterior em PHP puro.
+
+O projeto segue uma arquitetura moderna baseada em módulos, com foco em:
+
+-   Escalabilidade\
+-   Manutenibilidade\
+-   Separação de responsabilidades\
+-   Boas práticas de mercado
+
+------------------------------------------------------------------------
+
+## 🎯 Objetivo
+
+-   Aplicar arquitetura modular com NestJS\
+-   Utilizar TypeScript no backend\
+-   Implementar padrão RESTful\
+-   Trabalhar com banco relacional\
+-   Utilizar variáveis de ambiente\
+-   Criar base sólida para aplicações maiores
+
+------------------------------------------------------------------------
+
+## 🧠 Stack
+
+-   Node.js\
+-   TypeScript\
+-   NestJS\
+-   MySQL / PostgreSQL\
+-   TypeORM ou Prisma\
+-   dotenv\
+-   Docker (opcional)
+
+------------------------------------------------------------------------
+
+## 🏗️ Arquitetura
+
+Controller → Service → Repository → Database → Response
+
+### 🔹 Camadas
+
+-   Controller → Entrada HTTP\
+-   Service → Regras de negócio\
+-   Repository/ORM → Acesso a dados\
+-   Module → Organização\
+-   DTO → Validação e tipagem
+
+------------------------------------------------------------------------
+
+## 📂 Estrutura
+
+    src/
+    ├── modules/
+    │   └── users/
+    │       ├── dto/
+    │       ├── users.controller.ts
+    │       ├── users.service.ts
+    │       └── users.module.ts
+    ├── database/
+    ├── config/
+    ├── app.module.ts
+    └── main.ts
+
+------------------------------------------------------------------------
+
+## ⚙️ Instalação
+
+``` bash
+git clone https://github.com/marcelohasilva/rest-api-nestjs.git
+cd rest-api-nestjs
+npm install
 ```
 
-## Compile and run the project
+------------------------------------------------------------------------
 
-```bash
-# development
-$ npm run start
+## 🔧 Configuração
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+``` bash
+cp .env.example .env
 ```
 
-## Run tests
+Exemplo:
 
-```bash
-# unit tests
-$ npm run test
+    DB_HOST=localhost
+    DB_PORT=3306
+    DB_USER=root
+    DB_PASS=
+    DB_NAME=api_database
 
-# e2e tests
-$ npm run test:e2e
+    APP_ENV=development
+    APP_DEBUG=true
 
-# test coverage
-$ npm run test:cov
+------------------------------------------------------------------------
+
+## ▶️ Execução
+
+``` bash
+# desenvolvimento
+npm run start:dev
+
+# produção
+npm run build
+npm run start:prod
 ```
 
-## Deployment
+------------------------------------------------------------------------
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🌐 Endpoints
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### 👤 Users
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+  Método   Rota         Descrição
+  -------- ------------ ------------------
+  GET      /users       Lista usuários
+  GET      /users/:id   Busca por ID
+  POST     /users       Cria usuário
+  PUT      /users/:id   Atualiza usuário
+  DELETE   /users/:id   Remove usuário
+
+------------------------------------------------------------------------
+
+## 🔎 Exemplo de Resposta
+
+``` json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Marcelo",
+      "email": "marcelo@email.com"
+    }
+  ]
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+------------------------------------------------------------------------
 
-## Resources
+## 🔐 Segurança
 
-Check out a few resources that may come in handy when working with NestJS:
+-   Validação com class-validator\
+-   DTOs tipados\
+-   Variáveis de ambiente protegidas
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Estrutura pronta para:
 
-## Support
+-   JWT\
+-   Guards\
+-   Interceptors\
+-   Rate limiting\
+-   Logs
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+------------------------------------------------------------------------
 
-## Stay in touch
+## 📈 Roadmap
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+-   [ ] Autenticação JWT\
+-   [ ] Guards de autenticação\
+-   [ ] Logs estruturados\
+-   [ ] Paginação\
+-   [ ] Docker\
+-   [ ] Testes automatizados
 
-## License
+------------------------------------------------------------------------
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📝 Padrão de Commits
+
+-   feat: nova funcionalidade\
+-   fix: correção\
+-   refactor: refatoração\
+-   docs: documentação\
+-   chore: manutenção
+
+------------------------------------------------------------------------
+
+## 🤝 Contribuição
+
+``` bash
+git checkout -b feature/nova-feature
+git commit -m "feat: adiciona nova funcionalidade"
+git push origin feature/nova-feature
+```
+
+Abra um Pull Request 🚀
+
+------------------------------------------------------------------------
+
+## 👥 Autores
+
+-   Marcelo Henrique\
+-   Ricardo João\
+-   Gabriel Lopes\
+-   Gabriel Ramos\
+-   Thiago Ruan
