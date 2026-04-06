@@ -96,8 +96,8 @@ Controller → Service → Repository → Database → Response
 ## ⚙️ Instalação
 
 ``` bash
-git clone https://github.com/marcelohasilva/rest-api-nestjs.git
-cd rest-api-nestjs
+git clone https://github.com/RicardoNsm/markethub-backend-nestjs.git
+cd markethub-backend-nestjs
 npm install
 ```
 
@@ -217,8 +217,8 @@ Abra um Pull Request 🚀
 
 ## 👥 Autores
 
--   Marcelo Henrique\
--   Ricardo João\
--   Gabriel Lopes\
--   Gabriel Ramos\
--   Thiago Ruan
+- [Marcelo Henrique](https://github.com/marcelohasilva)
+- [Ricardo João](https://github.com/RicardoNsm)
+- [Gabriel Lopes](https://github.com/Gabriel-lopes06)
+- [Gabriel Ramos](https://github.com/gb-ramos01)
+- [Thiago Ruan](https://github.com/ThyagoRuan)
