@@ -1,10 +1,11 @@
-generator cliente{
-    provider = "prisma-client-js"
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -15,3 +16,4 @@ model User {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
+
