@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(uuid())
-  name      String    @db.VarChar(255)
+  id        String       @id @default(uuid())
+  name      String
   email     String    @unique
   phone     String?   @unique
-  password  String    @db.VarChar(32)
+  password  String    
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   
@@ -25,34 +25,39 @@ model User {
 }
 
 model Store {
-  id          Int       @id @default(uuid())
-  userId      Int
-  name        String    @db.VarChar(255)
-  phone       String?   @db.VarChar(50)
+  id          String       @id @default(uuid())
+  userId      String
+  name        String    
+  phone       String?   
   description String?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   
-  user User  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user User  @relation(fields: [userId], references: [id])
 
 
   products    Product[] //Uma Loja pode ter um ou mais produtos
+
+  cartItems   Cart[]    //Uma Loja pode ter um ou mais itens no carrinho
   
   @@map("stores")
 }
 
 model Product {
-  id          Int       @id @default(uuid())
-  sellerId    Int
-  name        String    @unique @db.VarChar(255)
-  price       Decimal   @db.Decimal(10, 2)
+  id          String       @id @default(uuid())
+  UserId    String
+  name        String    
+  price       Decimal   
   description String?
   stock       Int       @default(0)
-  imageUrl    String?   @db.VarChar(255)
-  createdAt   DateTime  @default(now()) @db.Timestamp(0)
-  updatedAt   DateTime  @updatedAt @db.Timestamp(0)
+  imageUrl    String?   
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt 
+
+  storeId String
   
-  seller      User      @relation("SellerProducts", fields: [sellerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  users      User      @relation(fields: [UserId], references: [id])
+  store Store @relation(fields: [storeId], references: [id])
   favorites   Favorite[]
   cartItems   Cart[]
   
@@ -60,33 +65,33 @@ model Product {
 }
 
 model Favorite {
-  id        Int      @id @default(uuid())
-  userId    Int
-  productId Int
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
+  id        String       @id @default(uuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt 
   
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  product  Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user     User    @relation(fields: [userId], references: [id])
+  product  Product @relation(fields: [productId], references: [id])
   
   @@unique([userId, productId])
   @@map("favorites")
 }
 
 model Cart {
-  id        Int      @id @default(uuid())
-  productId Int
-  userId    Int
-  storeId   Int
+  id        String       @id @default(uuid())
+  productId String
+  userId    String
+  storeId   String
   quantity  Int      @default(1)
-  createdAt DateTime @default(now()) @db.Timestamp(0)
-  updatedAt DateTime @updatedAt @db.Timestamp(0)
-  
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now()) 
+  updatedAt DateTime @updatedAt 
 
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
 
-  store     Store   @relation(fields: [storeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user      User    @relation(fields: [userId], references: [id])
+
+  store     Store   @relation(fields: [storeId], references: [id])
 
   
   @@unique([userId, productId, storeId])
