@@ -5,9 +5,12 @@ import { UsersModule } from './modules/users/users.module'
 import { PrismaService } from './prisma/prisma.service'
 import { PrismaModule } from './prisma/prisma.module'
 import { StoresModule } from './modules/stores/stores.module';
+import { ProductsModule } from './modules/products/products.module';
+import { FavoritesModule } from './modules/favorites/favorites.module';
+import { CartsModule } from './modules/carts/carts.module';
 
 @Module({
-  imports: [UsersModule, PrismaModule, StoresModule],
+  imports: [UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
