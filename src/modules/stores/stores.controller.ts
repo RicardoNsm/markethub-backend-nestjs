@@ -12,7 +12,7 @@ export class StoresController {
         @Post(':userId')
         create(@Body() data: StoresRequestDTO,
             @Param('userId', ParseUUIDPipe) userId: string){
-            return this.storesService.create(data, userId);
+            return this.storesService.create(data);
         
     }
 }
