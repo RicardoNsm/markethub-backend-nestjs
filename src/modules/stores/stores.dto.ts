@@ -6,4 +6,8 @@ import { IsNotEmpty, IsString } from "class-validator"
     @IsString()
     @IsNotEmpty()
     name!: string
+
+    @ApiProperty({ description: 'store description' })
+    @IsString()
+    description!: string
   }
