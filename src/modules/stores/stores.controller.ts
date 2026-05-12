@@ -1,6 +1,7 @@
-import { Body, Controller, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { StoresService } from './stores.service';
 import { StoresRequestDTO } from './stores.dto';
+import { ApiOAuth2, ApiResponse } from '@nestjs/swagger';
 
 @Controller({
     path: 'stores',
@@ -9,9 +10,22 @@ import { StoresRequestDTO } from './stores.dto';
 export class StoresController {
     constructor(private readonly storesService: StoresService){}
 
-        @Post(':userId')
-        create(@Body() data: StoresRequestDTO,
-            @Param('userId', ParseUUIDPipe) userId: string){
+    @Get()
+    @ApiResponse({
+        
+    })
+    findAll(){
+        return this.storesService.findAll()
+    }
+
+
+
+
+    @Post(':userId')
+    @ApiResponse({
+        type: 
+    })
+        create(@Body() data: StoresRequestDTO){
             return this.storesService.create(data);
         
     }
