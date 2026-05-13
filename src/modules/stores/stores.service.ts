@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { StoresRequestDTO } from './stores.dto';
+import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto';
 
 @Injectable()
 export class StoresService {
@@ -19,24 +19,39 @@ export class StoresService {
         })
     }
 
-    findById(id: string){
-        return this.prisma.store.findFirst({
+   async findById(id: string){
+        const store = await this.prisma.store.findUnique({
             where: {
                 id
             }
         })
+
+        if(!store){
+            throw new NotFoundException('store not found')
+        }
+
+        return store
+
     }
 
-    update(id: string, data: StoresRequestDTO){
+   async update(id: string, data: UpdateStoresDTO){
+        await this.findById(id)
+
         return this.prisma.store.update({
             where: {
                 id
             },
-            data
+            data: {
+                name: data.name,
+                description: data.description
+            }
         })
     }
 
-    remove(id: string){
+    async remove(id: string){
+       await this.findById(id)
+
+
         return this.prisma.store.delete({
             where: {
                 id
