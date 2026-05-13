@@ -28,6 +28,7 @@ export class UsersController {
   findAll() {
     return this.usersService.findAll()
   }
+
   @Get(':id')
   @ApiResponse({
     type: UsersListItemDTO,
@@ -41,6 +42,7 @@ export class UsersController {
 
     return user
   }
+
   @Post()
   @ApiResponse({
     type: UsersListItemDTO,
@@ -48,6 +50,7 @@ export class UsersController {
   create(@Body() data: UsersRequestDTO) {
     return this.usersService.create(data)
   }
+
   @Put(':id')
   @ApiResponse({
     type: UsersListItemDTO,
@@ -59,9 +62,9 @@ export class UsersController {
       throw new HttpException('user not found', HttpStatus.NOT_FOUND)
     }
 
-
-    return this.usersService.update(id,data)
+    return this.usersService.update(id, data)
   }
+  
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id', ParseUUIDPipe) id: string) {
