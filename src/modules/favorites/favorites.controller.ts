@@ -30,12 +30,12 @@ export class FavoritesController {
     return this.favoritesService.findAll()
   }
 
-  @Get(':id')
+  @Get(':favoriteId')
   @ApiResponse({
     type: FavoritesListItemDTO,
   })
-  async findOne(@Param('id', ParseUUIDPipe) id: string) {
-    const favorite = await this.favoritesService.findById(id)
+  async findOne(@Param('favoriteId', ParseUUIDPipe) favoriteId: string) {
+    const favorite = await this.favoritesService.findById(favoriteId)
 
     if (!favorite) {
       throw new HttpException('favorite not found', HttpStatus.NOT_FOUND)
@@ -52,29 +52,29 @@ export class FavoritesController {
     return this.favoritesService.create(data)
   }
 
-  @Put(':id')
+  @Put(':favoriteId')
   @ApiResponse({
     type: FavoritesListItemDTO,
   })
-  async update(@Param('id', ParseUUIDPipe) id: string, @Body() data: FavoritesRequestDTO) {
-    const favorite = await this.favoritesService.findById(id)
+  async update(@Param('favoriteId', ParseUUIDPipe) favoriteId: string, @Body() data: FavoritesRequestDTO) {
+    const favorite = await this.favoritesService.findById(favoriteId)
 
     if (!favorite) {
       throw new HttpException('favorite not found', HttpStatus.NOT_FOUND)
     }
 
-    return this.favoritesService.update(id, data)
+    return this.favoritesService.update(favoriteId, data)
   }
   
-  @Delete(':id')
+  @Delete(':favoriteId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseUUIDPipe) id: string) {
-    const favorite = await this.favoritesService.findById(id)
+  async remove(@Param('favoriteId', ParseUUIDPipe) favoriteId: string) {
+    const favorite = await this.favoritesService.findById(favoriteId)
 
     if (!favorite) {
       throw new HttpException('favorite not found', HttpStatus.NOT_FOUND)
     }
 
-    return this.favoritesService.remove(id)
+    return this.favoritesService.remove(favoriteId)
   }
 }
