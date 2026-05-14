@@ -7,92 +7,238 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+enum UserRole {
+  CLIENT
+  SELLER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REFUSED
+}
+
 model User {
-  id        String       @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  email     String    @unique
-  password  String    
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  
-  stores    Store[]
-  products  Product[]
-  favorites Favorite[]
-  cartItems Cart[]
-  
-   @@map("User")
+  email     String   @unique
+  password  String
+  phone     String?
+  avatar    String?
+  role      UserRole @default(CLIENT)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stores        Store[]
+  products      Product[]
+  favorites     Favorite[]
+  cartItems     Cart[]
+  orders        Order[]
+  reviews       Review[]
+  notifications Notification[]
+
+  @@map("users")
 }
 
 model Store {
-  id          String       @id @default(uuid())
+  id          String   @id @default(uuid())
   userId      String
-  name        String   
+
+  name        String
   description String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  
-  user User  @relation(fields: [userId], references: [id])
+  logo        String?
+  banner      String?
 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  products    Product[] //Uma Loja pode ter um ou mais produtos
+  user        User      @relation(fields: [userId], references: [id])
+  products    Product[]
 
-  cartItems   Cart[]    //Uma Loja pode ter um ou mais itens no carrinho
-  
   @@map("stores")
 }
 
-model Product {
-  id          String       @id @default(uuid())
-  UserId    String
-  name        String    
-  price       Decimal   
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
   description String?
-  stock       Int       @default(0)
-  imageUrl    String?   
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt 
 
-  storeId String
-  
-  users      User      @relation(fields: [UserId], references: [id])
-  store Store @relation(fields: [storeId], references: [id])
+  createdAt   DateTime @default(now())
+
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(uuid())
+
+  userId      String
+  storeId     String
+  categoryId  String
+
+  name        String
+  description String?
+
+  price       Decimal  
+  stock       Int      @default(0)
+
+  active      Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  store       Store    @relation(fields: [storeId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  images      ProductImage[]
   favorites   Favorite[]
   cartItems   Cart[]
-  
+  orderItems  OrderItem[]
+  reviews     Review[]
+
   @@map("products")
 }
 
+model ProductImage {
+  id         String   @id @default(uuid())
+  imageUrl   String
+
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+
+  createdAt  DateTime @default(now())
+
+  @@map("product_images")
+}
+
 model Favorite {
-  id        String       @id @default(uuid())
-  userId    String
-  productId String
-  createdAt DateTime @default(now()) 
-  updatedAt DateTime @updatedAt 
-  
-  user     User    @relation(fields: [userId], references: [id])
-  product  Product @relation(fields: [productId], references: [id])
-  
+  id         String   @id @default(uuid())
+
+  userId     String
+  productId  String
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user       User     @relation(fields: [userId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+
   @@unique([userId, productId])
   @@map("favorites")
 }
 
 model Cart {
-  id        String       @id @default(uuid())
-  productId String
-  userId    String
-  storeId   String
-  quantity  Int      @default(1)
-  createdAt DateTime @default(now()) 
-  updatedAt DateTime @updatedAt 
+  id         String   @id @default(uuid())
 
-  product   Product @relation(fields: [productId], references: [id])
+  userId     String
+  productId  String
 
-  user      User    @relation(fields: [userId], references: [id])
+  quantity   Int      @default(1)
 
-  store     Store   @relation(fields: [storeId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  
-  @@unique([userId, productId, storeId])
+  user       User     @relation(fields: [userId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
   @@map("cart")
+}
+
+model Order {
+  id                String       @id @default(uuid())
+
+  userId            String
+
+  totalPrice        Decimal      
+  shippingAddress   String
+
+  status            OrderStatus  @default(PENDING)
+
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  user              User         @relation(fields: [userId], references: [id])
+
+  items             OrderItem[]
+  payment           Payment?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+
+  orderId     String
+  productId   String
+
+  quantity    Int
+  unitPrice   Decimal  
+
+  order       Order    @relation(fields: [orderId], references: [id])
+  product     Product  @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Payment {
+  id              String         @id @default(uuid())
+
+  orderId         String         @unique
+
+  method          String
+  transactionId   String?
+
+  status          PaymentStatus  @default(PENDING)
+
+  createdAt       DateTime       @default(now())
+
+  order           Order          @relation(fields: [orderId], references: [id])
+
+  @@map("payments")
+}
+
+model Review {
+  id          String   @id @default(uuid())
+
+  userId      String
+  productId   String
+
+  rating      Int
+  comment     String?
+
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+  product     Product  @relation(fields: [productId], references: [id])
+
+  @@map("reviews")
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+
+  userId      String
+
+  message     String
+  read        Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
 }
 

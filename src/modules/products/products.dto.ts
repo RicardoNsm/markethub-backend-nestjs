@@ -16,7 +16,7 @@ export class ProductsRequestDTO {
   description!: string
 }
 
-export class ProductListDTO{
+export class ProductsListItemDTO{
     @ApiProperty() id!: string
     @ApiProperty() UserId!: string
     @ApiProperty() name!: string
