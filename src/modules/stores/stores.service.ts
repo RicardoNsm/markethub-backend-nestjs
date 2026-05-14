@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto';
+import { ProductsService } from '../products/products.service';
 
 @Injectable()
 export class StoresService {
-    constructor(private readonly prisma: PrismaService){}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly productsService: ProductsService,
+    ){}
 
     findAll(){
         return this.prisma.store.findMany()
@@ -50,6 +54,7 @@ export class StoresService {
 
     async remove(id: string){
        await this.findById(id)
+       await this.productsService.remove(id)
 
 
         return this.prisma.store.delete({
