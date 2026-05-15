@@ -2,28 +2,33 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto';
 import { ProductsService } from '../products/products.service';
+import { RequestContextService } from '../../common/services/request-context/request-context.service';
 
 @Injectable()
 export class StoresService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly productsService: ProductsService,
+        private readonly requestContext: RequestContextService,
     ){}
 
     findAll(){
         return this.prisma.store.findMany()
     }
 
-    create(data: StoresRequestDTO){
+    async create(data: StoresRequestDTO){
+        const userId = this.requestContext.getUserId()
+
         return this.prisma.store.create({
             data: {
                 ...data,
-                userId: '123',
+                createdBy: userId,
             }
         })
     }
 
    async findById(id: string){
+    
         const store = await this.prisma.store.findUnique({
             where: {
                 id
