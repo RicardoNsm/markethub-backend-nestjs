@@ -28,10 +28,29 @@ export class StoresService {
     }
 
    async findById(id: string){
+    const userId = this.requestContext.getUserId()
     
         const store = await this.prisma.store.findUnique({
             where: {
-                id
+                id,
+                createdBy: userId,
+            },select: {
+                id: true,
+                name: true,
+                description: true,
+                createdAt: true,
+                updatedAt: true,
+                products:{
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        description: true,
+                        active: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    }
+                } 
             }
         })
 
