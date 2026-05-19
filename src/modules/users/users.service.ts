@@ -33,7 +33,9 @@ export class UsersService {
     this.prisma.user.delete({
       where: {
         id,
+        
       },
     })
   }
 }
+
