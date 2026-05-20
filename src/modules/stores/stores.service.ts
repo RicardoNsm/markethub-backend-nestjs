@@ -3,6 +3,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto';
 import { ProductsService } from '../products/products.service';
 import { RequestContextService } from '../../common/services/request-context/request-context.service';
+import { UsersRequestDTO } from '../users/users.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class StoresService {
@@ -10,6 +12,7 @@ export class StoresService {
         private readonly prisma: PrismaService,
         private readonly productsService: ProductsService,
         private readonly requestContext: RequestContextService,
+        private readonly userService : UsersService,
     ){}
 
     findAll(){
@@ -32,9 +35,13 @@ export class StoresService {
    async findById(id: string){
     const userId = this.requestContext.getUserId()
     
+    const user = await this.userService.findById(userId)
+
+    const storeId = user?.stores[0].id
+    
         const store = await this.prisma.store.findUnique({
             where: {
-                id,
+                id: storeId,
                 createdBy: userId,
             },select: {
                 id: true,
