@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../../prisma/prisma.service'
 import { UsersRequestDTO } from './users.dto'
-import { StoresService } from '../stores/stores.service'
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService,
-    private readonly storesService : StoresService,
   ) {}
 
   findAll() {
