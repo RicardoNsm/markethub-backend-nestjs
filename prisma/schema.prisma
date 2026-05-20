@@ -85,7 +85,7 @@ model Product {
 
   userId      String
   storeId     String
-  categoryId  String
+  categoryId  String?
 
   name        String
   description String?
@@ -100,7 +100,7 @@ model Product {
 
   user        User     @relation(fields: [userId], references: [id])
   store       Store    @relation(fields: [storeId], references: [id])
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category? @relation(fields: [categoryId], references: [id])
 
   images      ProductImage[]
   favorites   Favorite[]

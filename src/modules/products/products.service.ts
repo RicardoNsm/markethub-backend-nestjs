@@ -1,14 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../../prisma/prisma.service'
 import { ProductsRequestDTO } from './products.dto'
+import { privateDecrypt } from 'crypto'
 import { RequestContextService } from '../../common/services/request-context/request-context.service'
+import { UsersService } from '../users/users.service'
 
 //falta finalizar
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService,
+  constructor(
+    private readonly prisma: PrismaService,
     private readonly requestContext: RequestContextService,
+    private readonly userService: UsersService
   ) {}
 
   findAll() {
@@ -16,35 +20,34 @@ export class ProductsService {
   }
 
   findById(id: string) {
-    const product = this.prisma.product.findFirst({
+    return this.prisma.product.findFirst({
       where: {
         id,
       },
     })
-     
-    if(!product){
-      throw new NotFoundException('product not fount')
+  }
+
+  async create(data: ProductsRequestDTO) {
+   const userId = this.requestContext.getUserId()
+   const user = await this.userService.findById(userId)
+
+     if (!user) {
+      throw new Error('Usuário não encontrado')
     }
 
-    return product
-  }
+     const storeId = user.stores[0].id
 
-  create(data: ProductsRequestDTO) {
-    const userId = this.requestContext.getUserId()
-
-    return this.prisma.product.create({
-      data: {
-        ...data,
-      storeId: '123',
-      userId: userId,
-      categoryId: '123'
+     return this.prisma.product.create({
+      data:{
+        ...data, 
+        userId: userId,
+        storeId: storeId,
+        categoryId: undefined
       }
-    })
+     })
   }
 
-  async update(id: string, data: ProductsRequestDTO) {
-    await this.findById(id)
-
+  update(id: string, data: ProductsRequestDTO) {
     return this.prisma.product.update({
       where: {
         id,
@@ -53,9 +56,7 @@ export class ProductsService {
     })
   }
 
-  async remove(id: string) {
-    await this.findById(id)
-
+  remove(id: string) {
     return this.prisma.product.delete({
       where: {
         id,
