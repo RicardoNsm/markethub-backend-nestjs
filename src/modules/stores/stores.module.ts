@@ -4,8 +4,10 @@ import { StoresService } from './stores.service';
 import { PrismaService } from '../../prisma/prisma.service'
 import { ProductsService } from '../products/products.service';
 import { RequestContextService } from '../../common/services/request-context/request-context.service';
+import { UsersModule } from '../users/users.module';
 
 @Module({
+  imports: [UsersModule],
   controllers: [StoresController],
   providers: [StoresService, PrismaService, ProductsService,RequestContextService],
 })

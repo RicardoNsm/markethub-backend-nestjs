@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../../prisma/prisma.service'
 import { ProductsRequestDTO } from './products.dto'
-import { privateDecrypt } from 'crypto'
 import { RequestContextService } from '../../common/services/request-context/request-context.service'
 import { UsersService } from '../users/users.service'
 
@@ -42,7 +41,7 @@ export class ProductsService {
         ...data, 
         userId: userId,
         storeId: storeId,
-        categoryId: undefined
+        categoryId:  null
       }
      })
   }

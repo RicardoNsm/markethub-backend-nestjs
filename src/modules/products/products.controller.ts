@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common'
 
 
@@ -27,11 +28,13 @@ import {
 } from './products.dto'
 
 import { ProductsService } from './products.service'
+import { JwtAuthGuard } from '../../common/guards/jwt-auth/jwt-auth.guard'
 
 @Controller({
   path: 'products',
   version: '1',
 })
+@UseGuards(JwtAuthGuard)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
