@@ -24,7 +24,6 @@ import {
 import {
   ProductsListItemDTO,
   ProductsRequestDTO,
-  UpdateProductsDTO,
 } from './products.dto'
 
 import { ProductsService } from './products.service'
@@ -71,7 +70,7 @@ export class ProductsController {
   update(
     @Param('productId', ParseUUIDPipe)
     productId: string,
-    @Body() data: UpdateProductsDTO,
+    @Body() data: ProductsRequestDTO,
   ) {
     return this.productsService.update(productId, data)
   }

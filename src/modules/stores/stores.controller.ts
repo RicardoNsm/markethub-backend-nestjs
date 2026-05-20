@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common'
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse } from '@nestjs/swagger'
 import { StoresListItemDTO, StoresRequestDTO, UpdateStoresDTO } from './stores.dto'
 import { StoresService } from './stores.service'
+import { JwtAuthGuard } from '../../common/guards/jwt-auth/jwt-auth.guard'
 
 @Controller({
   path: 'stores',
   version: '1',
 })
+@UseGuards(JwtAuthGuard)
 export class StoresController {
   constructor(private readonly storesService: StoresService) {}
 

@@ -1,28 +1,58 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto';
+import { ProductsService } from '../products/products.service';
+import { RequestContextService } from '../../common/services/request-context/request-context.service';
 
 @Injectable()
 export class StoresService {
-    constructor(private readonly prisma: PrismaService){}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly productsService: ProductsService,
+        private readonly requestContext: RequestContextService,
+    ){}
 
     findAll(){
         return this.prisma.store.findMany()
     }
 
-    create(data: StoresRequestDTO){
+    async create(data: StoresRequestDTO){
+        const userId = this.requestContext.getUserId()
+
+        
+
         return this.prisma.store.create({
             data: {
                 ...data,
-                userId: '123',
+                createdBy: userId,
             }
         })
     }
 
    async findById(id: string){
+    const userId = this.requestContext.getUserId()
+    
         const store = await this.prisma.store.findUnique({
             where: {
-                id
+                id,
+                createdBy: userId,
+            },select: {
+                id: true,
+                name: true,
+                description: true,
+                createdAt: true,
+                updatedAt: true,
+                products:{
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        description: true,
+                        active: true,
+                        createdAt: true,
+                        updatedAt: true,
+                    }
+                } 
             }
         })
 
@@ -50,6 +80,7 @@ export class StoresService {
 
     async remove(id: string){
        await this.findById(id)
+       await this.productsService.remove(id)
 
 
         return this.prisma.store.delete({
