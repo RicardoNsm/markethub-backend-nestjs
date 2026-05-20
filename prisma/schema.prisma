@@ -54,7 +54,7 @@ model Store {
   id          String   @id @default(uuid())
   createdBy      String
 
-  name        String
+  name        String @unique
   description String?
   logo        String?
   banner      String?

@@ -19,6 +19,8 @@ export class StoresService {
     async create(data: StoresRequestDTO){
         const userId = this.requestContext.getUserId()
 
+        
+
         return this.prisma.store.create({
             data: {
                 ...data,
