@@ -3,7 +3,6 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto';
 import { ProductsService } from '../products/products.service';
 import { RequestContextService } from '../../common/services/request-context/request-context.service';
-import { UsersRequestDTO } from '../users/users.dto';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -32,7 +31,7 @@ export class StoresService {
         })
     }
 
-   async findById(id: string){
+   async findById(){
     const userId = this.requestContext.getUserId()
     
     const user = await this.userService.findById(userId)
@@ -72,7 +71,7 @@ export class StoresService {
     }
 
    async update(id: string, data: UpdateStoresDTO){
-        await this.findById(id)
+        await this.findById()
 
         return this.prisma.store.update({
             where: {
@@ -86,9 +85,13 @@ export class StoresService {
     }
 
     async remove(id: string){
-       await this.findById(id)
-       await this.productsService.remove(id)
+       await this.findById()
 
+        await this.prisma.product.deleteMany({
+        where: {
+            storeId: id
+        }
+    });
 
         return this.prisma.store.delete({
             where: {
