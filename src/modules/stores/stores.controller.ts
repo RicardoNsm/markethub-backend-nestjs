@@ -20,12 +20,12 @@ export class StoresController {
     return this.storesService.findAll()
   }
 
-  @Get(':storeId')
+  @Get('/me')
   @ApiResponse({
     type: StoresListItemDTO,
   })
-  findById(@Param('storeId', ParseUUIDPipe) storeId: string){
-    return this.storesService.findById(storeId)
+  findById(){
+    return this.storesService.findById()
   }
 
   @Post()

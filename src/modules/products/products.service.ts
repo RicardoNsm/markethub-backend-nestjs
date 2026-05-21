@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaService } from '../../prisma/prisma.service'
 import { ProductsRequestDTO } from './products.dto'
 import { RequestContextService } from '../../common/services/request-context/request-context.service'
 import { UsersService } from '../users/users.service'
+import { Prisma } from '@prisma/client'
 
 //falta finalizar
 
@@ -55,11 +56,21 @@ export class ProductsService {
     })
   }
 
-  remove(id: string) {
-    return this.prisma.product.delete({
-      where: {
-        id,
-      },
-    })
+  async remove(id: string) {
+   try {
+      return await this.prisma.product.delete({
+        where: { id },
+      });
+    } catch (error) {
+      // Verifica se o erro veio do Prisma e se é o erro de requisição conhecida
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new NotFoundException(`Produto com o ID ${id} não foi encontrado.`);
+        }
+      }
+      
+      // Se for qualquer outro erro desconhecido, lança ele adiante
+      throw error;
+    }
   }
 }
