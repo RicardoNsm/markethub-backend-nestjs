@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Post, Put, UseGuards } from '@nestjs/common'
 import { ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiResponse } from '@nestjs/swagger'
 import { StoresListItemDTO, StoresRequestDTO, UpdateStoresDTO } from './stores.dto'
 import { StoresService } from './stores.service'
@@ -37,24 +37,21 @@ export class StoresController {
     return this.storesService.create(data)
   }
 
-  @Put(':storeId')
+  @Put('/me')
   @ApiOkResponse({
     type: StoresListItemDTO
   })
   update(
-    @Param('storeId', ParseUUIDPipe) storeId: string,
     @Body() data: UpdateStoresDTO,
   ){
-    return this.storesService.update(storeId,data)
+    return this.storesService.update(data)
   }
 
-  @Delete(':storeId')
+  @Delete('/me')
   @ApiNoContentResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(
-    @Param('storeId', ParseUUIDPipe) storeId : string
-  ){
-    return this.storesService.remove(storeId)
+  remove(){
+    return this.storesService.remove()
   }
 
 }
