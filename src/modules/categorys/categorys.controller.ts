@@ -42,14 +42,14 @@ export class CategorysController {
 
   // 🔴 Apenas administradores podem atualizar o nome ou descrição de uma categoria
   @Patch(':categoryId')
-  update(@Param('categoryId') categoryId: string, @Body() data: UpdateCategoryDTO) {
+  update(@Param('categoryId', ParseUUIDPipe) categoryId: string, @Body() data: UpdateCategoryDTO) {
     return this.categoryService.update(categoryId, data)
   }
 
   // 🔴 Apenas administradores podem deletar uma categoria
   @Delete(':categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('categoryId') categoryId: string) {
+  remove(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
     return this.categoryService.remove(categoryId)
   }
 }
