@@ -14,6 +14,11 @@ export class ProductsRequestDTO {
   @IsString()
   @IsOptional()
   description!: string
+
+  @ApiProperty({ description: 'product categoryId'})
+  @IsString()
+  @IsOptional() 
+  categoryId?: string;
 }
 
 export class ProductsListItemDTO{
