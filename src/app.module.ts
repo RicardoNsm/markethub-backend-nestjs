@@ -10,10 +10,13 @@ import { FavoritesModule } from './modules/favorites/favorites.module';
 import { CartsModule } from './modules/carts/carts.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RequestContextService } from './common/services/request-context/request-context.service';
+import { CategorysService } from './modules/categorys/categorys.service';
+import { CategorysController } from './modules/categorys/categorys.controller';
+import { CategorysModule } from './modules/categorys/categorys.module'
 
 @Module({
-  imports: [UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule, AuthModule],
-  controllers: [AppController],
-  providers: [AppService, PrismaService, RequestContextService],
+  imports: [UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule, AuthModule, CategorysModule],
+  controllers: [AppController, CategorysController],
+  providers: [AppService, PrismaService, RequestContextService, CategorysService],
 })
 export class AppModule {}
