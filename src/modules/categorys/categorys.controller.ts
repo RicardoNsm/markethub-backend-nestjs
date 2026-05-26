@@ -6,6 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -34,21 +35,21 @@ export class CategorysController {
   }
 
   // 🟢 Aberto: Buscar os detalhes de uma categoria específica
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findById(id)
+  @Get(':categoryId')
+  findOne(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
+    return this.categoryService.findById(categoryId)
   }
 
   // 🔴 Apenas administradores podem atualizar o nome ou descrição de uma categoria
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDTO) {
-    return this.categoryService.update(id, updateCategoryDto)
+  @Patch(':categoryId')
+  update(@Param('categoryId') categoryId: string, @Body() data: UpdateCategoryDTO) {
+    return this.categoryService.update(categoryId, data)
   }
 
   // 🔴 Apenas administradores podem deletar uma categoria
-  @Delete(':id')
+  @Delete(':categoryId')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(id)
+  remove(@Param('categoryId') categoryId: string) {
+    return this.categoryService.remove(categoryId)
   }
 }
