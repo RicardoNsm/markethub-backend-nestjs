@@ -36,3 +36,10 @@ export class UpdateCategoryDTO {
     @IsOptional()
     description?: string
 }
+
+export class CategoryListemDTO {
+    @ApiProperty() id!: string
+    @ApiProperty() name!: string
+    @ApiProperty() description!: string
+    @ApiProperty({ format: 'date-time'}) createdAT!: string
+}

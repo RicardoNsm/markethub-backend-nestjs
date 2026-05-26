@@ -45,7 +45,25 @@ export class CategorysService {
     const category = await this.prisma.category.findUnique({
       where: {
         id,
-      },
+      },select:{
+        id:true,
+        name:true,
+        description:true,
+        createdAt:true,
+        _count:true,
+        products:{
+          select: {
+            id:true,
+            storeId:true,
+            userId:true,
+            name: true,
+            description: true,
+            price: true,
+            stock: true,
+            productUrl: true,            
+          }
+        }
+      }
     })
 
     if (!category) {

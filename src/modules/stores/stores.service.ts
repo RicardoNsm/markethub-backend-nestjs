@@ -58,6 +58,7 @@ export class StoresService {
         products: {
           select: {
             id: true,
+            productUrl: true,
             name: true,
             price: true,
             description: true,
