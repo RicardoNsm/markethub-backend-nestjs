@@ -34,6 +34,7 @@ export class ProductsRequestDTO {
 
 export class ProductsListItemDTO{
     @ApiProperty() id!: string
+    @ApiProperty() productUrl!: string
     @ApiProperty() UserId!: string
     @ApiProperty() name!: string
     @ApiProperty() price!: number
