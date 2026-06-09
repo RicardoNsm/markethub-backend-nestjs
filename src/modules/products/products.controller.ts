@@ -46,6 +46,14 @@ export class ProductsController {
     return this.productsService.findAll()
   }
 
+  @Get('/me')
+  @ApiResponse({
+    type: ProductsListItemDTO
+  })
+  findMeProduct(){
+    return this.productsService.findMeProduct()
+  }
+
   @Get(':productId')
   @ApiResponse({
     type: ProductsListItemDTO,
@@ -56,6 +64,9 @@ export class ProductsController {
   ) {
     return this.productsService.findById(productId)
   }
+
+  
+  
 
   @Post()
   @ApiCreatedResponse({
