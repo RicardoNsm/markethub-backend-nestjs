@@ -34,6 +34,17 @@ export class ProductsService {
     })
   }
 
+  async findMeProduct(){
+    const userId = this.requestContext.getUserId()
+
+    return this.prisma.product.findMany({
+      where: {
+        userId: userId
+      }
+    })
+  }
+
+
   async create(data: ProductsRequestDTO) {
     const userId = this.requestContext.getUserId()
     const user = await this.userService.findById(userId)
