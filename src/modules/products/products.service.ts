@@ -16,13 +16,20 @@ export class ProductsService {
   ) {}
 
   findAll() {
-    return this.prisma.product.findMany()
+    return this.prisma.product.findMany({
+      include: {
+        images: true,
+      },
+    })
   }
 
   findById(id: string) {
     return this.prisma.product.findFirst({
       where: {
         id,
+      },
+      include: {
+        images: true,
       },
     })
   }
@@ -64,7 +71,18 @@ export class ProductsService {
         userId: userId,
         storeId: storeId,
         categoryId: data.categoryId ?? null,
-      }as Prisma.ProductUncheckedCreateInput,
+
+        images: data.images
+          ? {
+              create: data.images.map((url) => ({
+                imageUrl: url,
+              })),
+            }
+          : undefined,
+      } as Prisma.ProductUncheckedCreateInput,
+      include: {
+        images: true,
+      },
     })
   }
 
@@ -73,7 +91,21 @@ export class ProductsService {
       where: {
         id,
       },
-      data,
+      data: {
+        name: data.name,
+        description: data.description,
+        price: data.price,
+        stock: data.stock,
+
+        ...(data.categoryId && {
+          category: { 
+            connect: { id: data.categoryId },
+          },
+        }),
+      },
+      include:{
+        images: true
+      }
     })
   }
 

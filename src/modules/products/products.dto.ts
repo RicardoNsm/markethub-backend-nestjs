@@ -2,6 +2,12 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class ProductsRequestDTO {
+
+  @ApiProperty({ description: 'product images', type: [String] })
+  @IsString({ each: true })
+  @IsOptional()
+  images?: string[]; // 👈 NOVO
+
   @ApiProperty({ description: 'product Url'})
   @IsString()
   @IsNotEmpty()
@@ -34,6 +40,7 @@ export class ProductsRequestDTO {
 
 export class ProductsListItemDTO{
     @ApiProperty() id!: string
+    @ApiProperty() images!: string[]
     @ApiProperty() productUrl!: string
     @ApiProperty() UserId!: string
     @ApiProperty() name!: string
