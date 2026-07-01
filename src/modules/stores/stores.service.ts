@@ -89,6 +89,8 @@ export class StoresService {
       data: {
         name: data.name,
         description: data.description,
+        logo: data.logo,
+        banner: data.banner,
       },
     })
   }
@@ -109,5 +111,26 @@ export class StoresService {
         id: storeId,
       },
     })
+  }
+
+
+  async updateMedia(data: { logo?: string; banner?: string }) {
+    // Exemplo: buscando a loja cadastrada pelo usuário logado.
+    // Adapte o "createdBy" para pegar o ID real vindo do JWT Guard do seu request.
+    const userId = this.requestContext.getUserId()
+
+    const store = await this.prisma.store.findFirst({
+      where: { createdBy: userId }, 
+    });
+
+    if (!store) {
+      throw new NotFoundException('Loja não encontrada');
+    }
+
+    // Atualiza apenas os campos que foram enviados no upload
+    return this.prisma.store.update({
+      where: { id: store.id },
+      data,
+    });
   }
 }

@@ -12,10 +12,17 @@ import { AuthModule } from './modules/auth/auth.module';
 import { RequestContextService } from './common/services/request-context/request-context.service';
 import { CategorysService } from './modules/categorys/categorys.service';
 import { CategorysController } from './modules/categorys/categorys.controller';
-import { CategorysModule } from './modules/categorys/categorys.module'
+import { CategorysModule } from './modules/categorys/categorys.module';
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
+
 
 @Module({
-  imports: [UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule, AuthModule, CategorysModule],
+  imports: [ ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads', // Prefixo da URL
+    }),
+    UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule, AuthModule, CategorysModule],
   controllers: [AppController, CategorysController],
   providers: [AppService, PrismaService, RequestContextService, CategorysService],
 })
