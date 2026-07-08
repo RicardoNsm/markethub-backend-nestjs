@@ -46,7 +46,12 @@ async function bootstrap() {
 
   // validação
 
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    transform: true, // <--- ISSO faz o backend converter o texto do FormData para Number automaticamente
+  }),
+);
 
   await app.listen(process.env.PORT ?? 3000)
 }

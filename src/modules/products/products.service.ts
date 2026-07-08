@@ -40,7 +40,10 @@ export class ProductsService {
     return this.prisma.product.findMany({
       where: {
         userId: userId
-      }
+      },
+       include: {
+        images: true,
+      },
     })
   }
 
