@@ -51,7 +51,9 @@ export class ProductsController {
     type: ProductsListItemDTO
   })
   findMeProduct(){
-    return this.productsService.findMeProduct()
+    const data = this.productsService.findMeProduct()
+    console.log("DADOS DO PRISMA NO BACKEND:", JSON.stringify(data, null, 2));
+   return data;
   }
 
   @Get(':productId')

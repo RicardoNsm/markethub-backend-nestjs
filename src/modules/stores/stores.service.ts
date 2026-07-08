@@ -96,22 +96,34 @@ export class StoresService {
   }
 
   async remove() {
-    const store = await this.findById()
+  const store = await this.findById();
+  const storeId = store.id;
 
-    const storeId = store.id
+  // 1. Descobrir todos os produtos vinculados a essa loja
+  const products = await this.prisma.product.findMany({
+    where: { storeId: storeId },
+    select: { id: true }
+  });
+  
+  const productIds = products.map(p => p.id);
 
-    await this.prisma.product.deleteMany({
-      where: {
-        storeId: storeId,
-      },
-    })
+  // 2. Apagar primeiro todas as imagens que pertencem a esses produtos 🌟
+  await this.prisma.productImage.deleteMany({
+    where: {
+      productId: { in: productIds }
+    }
+  });
 
-    return this.prisma.store.delete({
-      where: {
-        id: storeId,
-      },
-    })
-  }
+  // 3. Agora sim, apagar os produtos da loja
+  await this.prisma.product.deleteMany({
+    where: { storeId: storeId }
+  });
+
+  // 4. Por fim, apagar a loja em si (se for o que a função finaliza)
+  return await this.prisma.store.delete({
+    where: { id: storeId }
+  });
+}
 
 
   async updateMedia(data: { logo?: string; banner?: string }) {
