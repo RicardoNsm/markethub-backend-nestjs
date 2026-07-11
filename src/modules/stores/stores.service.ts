@@ -18,6 +18,50 @@ export class StoresService {
     return this.prisma.store.findMany()
   }
 
+  async findByStoreId(storeId: string) {
+    const store = await this.prisma.store.findUnique({
+      where: {
+        id: storeId,
+      },
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        description: true,
+        logo: true,
+        banner: true,
+        createdAt: true,
+        updatedAt: true,
+        products: {
+          select: {
+            id: true,
+            productUrl: true,
+            name: true,
+            price: true,
+            description: true,
+            active: true,
+            createdAt: true,
+            updatedAt: true,
+            images: {
+              select: {
+                id: true,
+                imageUrl: true,
+                productId: true,
+                createdAt: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!store) {
+      throw new NotFoundException('store not found')
+    }
+
+    return store
+  }
+
   async create(data: StoresRequestDTO) {
     const userId = this.requestContext.getUserId()
 
@@ -65,6 +109,14 @@ export class StoresService {
             active: true,
             createdAt: true,
             updatedAt: true,
+            images: {
+              select: {
+                id: true,
+                imageUrl: true,
+                productId: true,
+                createdAt: true,
+              },
+            },
           },
         },
       },
