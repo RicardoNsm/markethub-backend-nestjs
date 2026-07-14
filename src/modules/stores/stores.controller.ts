@@ -6,8 +6,10 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Put,
+  ParseUUIDPipe,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -44,6 +46,17 @@ export class StoresController {
   })
   findAll() {
     return this.storesService.findAll()
+  }
+
+  @Get(':storeId')
+  @ApiResponse({
+    type: StoresListItemDTO,
+  })
+  findStoreById(
+    @Param('storeId', ParseUUIDPipe)
+    storeId: string,
+  ) {
+    return this.storesService.findByStoreId(storeId)
   }
 
   @Get('/me')
