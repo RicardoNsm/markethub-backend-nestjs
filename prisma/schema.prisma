@@ -27,6 +27,13 @@
     REFUSED
   }
 
+  enum Marketplace {
+  SHOPEE
+  MERCADO_LIVRE
+  AMAZON
+  MAGALU
+}
+
   model User {
     id        String   @id @default(uuid())
     name      String
@@ -89,12 +96,27 @@
 
     name        String
     description String?
-    productUrl  String
 
+    productUrl  String
     price       Decimal  
     stock       Int      @default(0)
 
     active      Boolean  @default(true)
+
+
+      marketplace Marketplace @default(SHOPEE)
+
+      affiliateUrl String?      // Link de afiliado gerado pela Shopee
+
+      trackingId String? @unique // sub_id1 gerado pelo MarketHub
+
+      shopeeItemId String? // ID do produto na Shopee
+
+      shopeeShopId String? // ID da loja da Shopee
+
+      affiliateGenerated Boolean @default(false)
+
+      
 
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt

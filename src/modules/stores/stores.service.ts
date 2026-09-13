@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { RequestContextService } from '../../common/services/request-context/request-context.service'
 import { PrismaService } from '../../prisma/prisma.service'
-import { ProductsService } from '../products/products.service'
 import { UsersService } from '../users/users.service'
 import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto'
 
@@ -9,7 +8,6 @@ import { StoresRequestDTO, UpdateStoresDTO } from './stores.dto'
 export class StoresService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly productsService: ProductsService,
     private readonly requestContext: RequestContextService,
     private readonly userService: UsersService,
   ) {}
@@ -148,35 +146,34 @@ export class StoresService {
   }
 
   async remove() {
-  const store = await this.findById();
-  const storeId = store.id;
+    const store = await this.findById()
+    const storeId = store.id
 
-  // 1. Descobrir todos os produtos vinculados a essa loja
-  const products = await this.prisma.product.findMany({
-    where: { storeId: storeId },
-    select: { id: true }
-  });
-  
-  const productIds = products.map(p => p.id);
+    // 1. Descobrir todos os produtos vinculados a essa loja
+    const products = await this.prisma.product.findMany({
+      where: { storeId: storeId },
+      select: { id: true },
+    })
 
-  // 2. Apagar primeiro todas as imagens que pertencem a esses produtos 🌟
-  await this.prisma.productImage.deleteMany({
-    where: {
-      productId: { in: productIds }
-    }
-  });
+    const productIds = products.map((p) => p.id)
 
-  // 3. Agora sim, apagar os produtos da loja
-  await this.prisma.product.deleteMany({
-    where: { storeId: storeId }
-  });
+    // 2. Apagar primeiro todas as imagens que pertencem a esses produtos 🌟
+    await this.prisma.productImage.deleteMany({
+      where: {
+        productId: { in: productIds },
+      },
+    })
 
-  // 4. Por fim, apagar a loja em si (se for o que a função finaliza)
-  return await this.prisma.store.delete({
-    where: { id: storeId }
-  });
-}
+    // 3. Agora sim, apagar os produtos da loja
+    await this.prisma.product.deleteMany({
+      where: { storeId: storeId },
+    })
 
+    // 4. Por fim, apagar a loja em si (se for o que a função finaliza)
+    return await this.prisma.store.delete({
+      where: { id: storeId },
+    })
+  }
 
   async updateMedia(data: { logo?: string; banner?: string }) {
     // Exemplo: buscando a loja cadastrada pelo usuário logado.
@@ -184,17 +181,17 @@ export class StoresService {
     const userId = this.requestContext.getUserId()
 
     const store = await this.prisma.store.findFirst({
-      where: { createdBy: userId }, 
-    });
+      where: { createdBy: userId },
+    })
 
     if (!store) {
-      throw new NotFoundException('Loja não encontrada');
+      throw new NotFoundException('Loja não encontrada')
     }
 
     // Atualiza apenas os campos que foram enviados no upload
     return this.prisma.store.update({
       where: { id: store.id },
       data,
-    });
+    })
   }
 }

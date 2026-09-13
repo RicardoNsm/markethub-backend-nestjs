@@ -1,7 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { RequestContextService } from '../../common/services/request-context/request-context.service'
 import { PrismaService } from '../../prisma/prisma.service'
+import { ShopeeService } from '../shopee/shopee.service'
+import { generateTrackingId } from '../shopee/utils/generate-tracking-id'
 import { UsersService } from '../users/users.service'
 import { ProductsRequestDTO } from './products.dto'
 
@@ -13,6 +15,7 @@ export class ProductsService {
     private readonly prisma: PrismaService,
     private readonly requestContext: RequestContextService,
     private readonly userService: UsersService,
+    private readonly shopeeService: ShopeeService,
   ) {}
 
   findAll() {
@@ -34,22 +37,22 @@ export class ProductsService {
     })
   }
 
-  async findMeProduct(){
+  async findMeProduct() {
     const userId = this.requestContext.getUserId()
 
     return this.prisma.product.findMany({
       where: {
-        userId: userId
+        userId: userId,
       },
-       include: {
+      include: {
         images: true,
       },
     })
   }
 
-
   async create(data: ProductsRequestDTO) {
     const userId = this.requestContext.getUserId()
+
     const user = await this.userService.findById(userId)
 
     if (!user) {
@@ -62,7 +65,42 @@ export class ProductsService {
       )
     }
 
+    if (!data.categoryId) {
+      throw new BadRequestException('A categoria do produto é obrigatória.')
+    }
+
+    const category = await this.prisma.category.findUnique({
+      where: { id: data.categoryId },
+      select: { id: true },
+    })
+
+    if (!category) {
+      throw new BadRequestException('Categoria não encontrada.')
+    }
+
     const storeId = user.stores[0].id
+
+    let affiliateData = {
+      affiliateUrl: null as string | null,
+      trackingId: null as string | null,
+      shopeeItemId: null as string | null,
+      shopeeShopId: null as string | null,
+      affiliateGenerated: false,
+    }
+
+    if (data.productUrl.includes('shopee.com.br')) {
+      const trackingId = generateTrackingId()
+
+      const shopee = await this.shopeeService.generateAffiliateLink(data.productUrl, trackingId)
+
+      affiliateData = {
+        affiliateUrl: shopee.affiliateUrl,
+        trackingId,
+        shopeeItemId: null,
+        shopeeShopId: null,
+        affiliateGenerated: true,
+      }
+    }
 
     return this.prisma.product.create({
       data: {
@@ -73,7 +111,9 @@ export class ProductsService {
         stock: data.stock,
         userId: userId,
         storeId: storeId,
-        categoryId: data.categoryId ?? null,
+        categoryId: data.categoryId,
+
+        ...affiliateData,
 
         images: data.images
           ? {
@@ -101,14 +141,14 @@ export class ProductsService {
         stock: data.stock,
 
         ...(data.categoryId && {
-          category: { 
+          category: {
             connect: { id: data.categoryId },
           },
         }),
       },
-      include:{
-        images: true
-      }
+      include: {
+        images: true,
+      },
     })
   }
 

@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { ValidationPipe, VersioningType } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
@@ -47,11 +49,11 @@ async function bootstrap() {
   // validação
 
   app.useGlobalPipes(
-  new ValidationPipe({
-    whitelist: true,
-    transform: true, // <--- ISSO faz o backend converter o texto do FormData para Number automaticamente
-  }),
-);
+    new ValidationPipe({
+      whitelist: true,
+      transform: true, // <--- ISSO faz o backend converter o texto do FormData para Number automaticamente
+    }),
+  )
 
   await app.listen(process.env.PORT ?? 3000)
 }

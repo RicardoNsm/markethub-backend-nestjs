@@ -1,14 +1,13 @@
-import { Module } from '@nestjs/common';
-import { StoresController } from './stores.controller';
-import { StoresService } from './stores.service';
+import { Module } from '@nestjs/common'
+import { RequestContextService } from '../../common/services/request-context/request-context.service'
 import { PrismaService } from '../../prisma/prisma.service'
-import { ProductsService } from '../products/products.service';
-import { RequestContextService } from '../../common/services/request-context/request-context.service';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '../users/users.module'
+import { StoresController } from './stores.controller'
+import { StoresService } from './stores.service'
 
 @Module({
   imports: [UsersModule],
   controllers: [StoresController],
-  providers: [StoresService, PrismaService, ProductsService,RequestContextService],
+  providers: [StoresService, PrismaService, RequestContextService],
 })
 export class StoresModule {}

@@ -15,6 +15,8 @@ import { CategorysController } from './modules/categorys/categorys.controller';
 import { CategorysModule } from './modules/categorys/categorys.module';
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { ShopeeModule } from './modules/shopee/shopee.module';
+import { ShopeeService } from './modules/shopee/shopee.service'
 
 
 @Module({
@@ -22,8 +24,8 @@ import { join } from 'path'
       rootPath: join(process.cwd(), 'uploads'),
       serveRoot: '/uploads', // Prefixo da URL
     }),
-    UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule, AuthModule, CategorysModule],
+    UsersModule, PrismaModule, StoresModule, ProductsModule, FavoritesModule, CartsModule, AuthModule, CategorysModule, ShopeeModule],
   controllers: [AppController, CategorysController],
-  providers: [AppService, PrismaService, RequestContextService, CategorysService],
+  providers: [AppService, PrismaService, RequestContextService, CategorysService, ShopeeService],
 })
 export class AppModule {}
