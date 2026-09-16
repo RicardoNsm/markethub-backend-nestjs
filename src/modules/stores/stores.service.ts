@@ -23,7 +23,7 @@ export class StoresService {
       },
       select: {
         id: true,
-        userId: true,
+        createdBy: true,
         name: true,
         description: true,
         logo: true,
