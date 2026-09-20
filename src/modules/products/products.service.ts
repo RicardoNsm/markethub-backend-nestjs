@@ -127,6 +127,8 @@ export class ProductsService {
         images: true,
       },
     })
+
+  
   }
 
   update(id: string, data: ProductsRequestDTO) {

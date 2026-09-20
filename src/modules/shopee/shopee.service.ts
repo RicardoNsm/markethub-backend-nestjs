@@ -77,4 +77,8 @@ export class ShopeeService {
       trackingId,
     }
   }
+
+  async getConversions() {
+    
+  }
 }
