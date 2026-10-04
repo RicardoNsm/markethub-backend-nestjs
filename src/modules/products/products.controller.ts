@@ -34,7 +34,6 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth/jwt-auth.guard'
   path: 'products',
   version: '1',
 })
-@UseGuards(JwtAuthGuard)
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
@@ -45,7 +44,7 @@ export class ProductsController {
   findAll() {
     return this.productsService.findAll()
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get('/me')
   @ApiResponse({
     type: ProductsListItemDTO
@@ -56,6 +55,7 @@ export class ProductsController {
    return data;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':productId')
   @ApiResponse({
     type: ProductsListItemDTO,
@@ -69,7 +69,7 @@ export class ProductsController {
 
   
   
-
+  @UseGuards(JwtAuthGuard)
   @Post()
   @ApiCreatedResponse({
     type: ProductsListItemDTO,
@@ -79,6 +79,7 @@ export class ProductsController {
     return this.productsService.create(data)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':productId')
   @ApiOkResponse({
     type: ProductsListItemDTO,
