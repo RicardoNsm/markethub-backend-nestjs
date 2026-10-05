@@ -86,7 +86,7 @@ export class StoresService {
 
     const storeId = user?.stores[0].id
 
-    const store = await this.prisma.store.findUnique({
+    const store = await this.prisma.store.findFirst({
       where: {
         id: storeId,
         createdBy: userId,
