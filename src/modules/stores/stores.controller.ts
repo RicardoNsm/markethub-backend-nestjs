@@ -40,6 +40,14 @@ import { StoresService } from './stores.service'
 export class StoresController {
   constructor(private readonly storesService: StoresService) {}
 
+   @Get('/me')
+  @ApiResponse({
+    type: StoresListItemDTO,
+  })
+  findById() {
+    return this.storesService.findById()
+  }
+  
   @Get()
   @ApiResponse({
     type: [StoresListItemDTO],
@@ -59,13 +67,7 @@ export class StoresController {
     return this.storesService.findByStoreId(storeId)
   }
 
-  @Get('/me')
-  @ApiResponse({
-    type: StoresListItemDTO,
-  })
-  findById() {
-    return this.storesService.findById()
-  }
+ 
 
   @Post()
   @ApiCreatedResponse({
