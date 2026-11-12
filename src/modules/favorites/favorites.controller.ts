@@ -4,77 +4,81 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
-} from '@nestjs/common'
-import { ApiResponse } from '@nestjs/swagger'
-import { FavoritesListItemDTO, FavoritesRequestDTO } from './favorites.dto'
-import { FavoritesService } from './favorites.service'
+  UseGuards,
+} from '@nestjs/common';
 
+import {
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+
+import {
+  FavoritesListItemDTO,
+  FavoritesRequestDTO,
+} from './favorites.dto';
+
+import { FavoritesService } from './favorites.service';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth/jwt-auth.guard';
+
+@ApiTags('Favorites')
 @Controller({
   version: '1',
   path: 'favorites',
 })
+@UseGuards(JwtAuthGuard)
 export class FavoritesController {
-  constructor(private readonly favoritesService: FavoritesService) {}
+  constructor(
+    private readonly favoritesService: FavoritesService,
+  ) {}
 
+  // GET /v1/favorites
   @Get()
-  @ApiResponse({
-    type: [FavoritesListItemDTO],
-  })
+  @ApiOkResponse({ type: [FavoritesListItemDTO] })
   findAll() {
-    return this.favoritesService.findAll()
+    return this.favoritesService.findAll();
   }
 
+  // GET /v1/favorites/:favoriteId
   @Get(':favoriteId')
-  @ApiResponse({
-    type: FavoritesListItemDTO,
-  })
-  async findOne(@Param('favoriteId', ParseUUIDPipe) favoriteId: string) {
-    const favorite = await this.favoritesService.findById(favoriteId)
-
-    if (!favorite) {
-      throw new HttpException('favorite not found', HttpStatus.NOT_FOUND)
-    }
-
-    return favorite
+  @ApiOkResponse({ type: FavoritesListItemDTO })
+  findOne(
+    @Param('favoriteId', ParseUUIDPipe) favoriteId: string,
+  ) {
+    return this.favoritesService.findById(favoriteId);
   }
 
+  // POST /v1/favorites
   @Post()
-  @ApiResponse({
-    type: FavoritesListItemDTO,
-  })
+  @ApiCreatedResponse({ type: FavoritesListItemDTO })
+  @HttpCode(HttpStatus.CREATED)
   create(@Body() data: FavoritesRequestDTO) {
-    return this.favoritesService.create(data)
+    return this.favoritesService.create(data);
   }
 
+  // PUT /v1/favorites/:favoriteId
   @Put(':favoriteId')
-  @ApiResponse({
-    type: FavoritesListItemDTO,
-  })
-  async update(@Param('favoriteId', ParseUUIDPipe) favoriteId: string, @Body() data: FavoritesRequestDTO) {
-    const favorite = await this.favoritesService.findById(favoriteId)
-
-    if (!favorite) {
-      throw new HttpException('favorite not found', HttpStatus.NOT_FOUND)
-    }
-
-    return this.favoritesService.update(favoriteId, data)
+  @ApiOkResponse({ type: FavoritesListItemDTO })
+  update(
+    @Param('favoriteId', ParseUUIDPipe) favoriteId: string,
+    @Body() data: FavoritesRequestDTO,
+  ) {
+    return this.favoritesService.update(favoriteId, data);
   }
-  
+
+  // DELETE /v1/favorites/:favoriteId
   @Delete(':favoriteId')
+  @ApiNoContentResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('favoriteId', ParseUUIDPipe) favoriteId: string) {
-    const favorite = await this.favoritesService.findById(favoriteId)
-
-    if (!favorite) {
-      throw new HttpException('favorite not found', HttpStatus.NOT_FOUND)
-    }
-
-    return this.favoritesService.remove(favoriteId)
+  remove(
+    @Param('favoriteId', ParseUUIDPipe) favoriteId: string,
+  ) {
+    return this.favoritesService.remove(favoriteId);
   }
 }

@@ -1,224 +1,330 @@
-# 🚀 API RESTful com NestJS
+# 🚀 MarketHub API — Backend
 
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <img src="https://nestjs.com/img/logo-small.svg" width="120" alt="NestJS Logo" />
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  API RESTful desenvolvida com NestJS e TypeScript para o projeto MarketHub.
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+---
 
-------------------------------------------------------------------------
+## 📌 Sobre o projeto
 
-## 📌 Descrição
+O **MarketHub** é uma plataforma voltada ao comércio eletrônico, com foco na divulgação e comercialização de produtos por meio de marketplaces e programas de afiliados.
 
-Esta é uma API RESTful desenvolvida utilizando o framework NestJS,
-substituindo uma versão anterior em PHP puro.
+Este repositório contém o backend da aplicação, responsável pelo processamento das requisições, gerenciamento de dados, autenticação de usuários e execução das regras de negócio.
 
-O projeto segue uma arquitetura moderna baseada em módulos, com foco em:
+A API utiliza o framework NestJS e segue uma arquitetura modular, buscando facilitar a organização, manutenção e expansão do sistema.
 
--   Escalabilidade\
--   Manutenibilidade\
--   Separação de responsabilidades\
--   Boas práticas de mercado
+## 🎯 Objetivos
 
-------------------------------------------------------------------------
+- Desenvolver uma API RESTful utilizando NestJS.
+- Aplicar TypeScript no desenvolvimento backend.
+- Utilizar arquitetura modular.
+- Implementar autenticação e proteção de rotas.
+- Gerenciar dados utilizando Prisma ORM.
+- Desenvolver funcionalidades para o comércio eletrônico.
+- Integrar o backend com a interface frontend.
+- Aplicar boas práticas de desenvolvimento.
+- Trabalhar com versionamento e colaboração em equipe.
 
-## 🎯 Objetivo
+## 🛠️ Tecnologias utilizadas
 
--   Aplicar arquitetura modular com NestJS\
--   Utilizar TypeScript no backend\
--   Implementar padrão RESTful\
--   Trabalhar com banco relacional\
--   Utilizar variáveis de ambiente\
--   Criar base sólida para aplicações maiores
-
-------------------------------------------------------------------------
-
-## 🧠 Stack
-
--   Node.js\
--   TypeScript\
--   NestJS\
--   MySQL / PostgreSQL\
--   TypeORM ou Prisma\
--   dotenv\
--   Docker (opcional)
-
-------------------------------------------------------------------------
+| **Tecnologia** | **Finalidade** |
+|---|---|
+| Node.js | Ambiente de execução do backend |
+| TypeScript | Linguagem de programação |
+| NestJS | Framework utilizado para desenvolver e estruturar a API |
+| Prisma ORM | Comunicação e gerenciamento das operações com o banco de dados |
+| PostgreSQL / SQLite | Bancos de dados relacionais, conforme configuração do ambiente |
+| JWT (JSON Web Token) | Autenticação e autorização de usuários |
+| class-validator | Validação dos dados recebidos pela API |
+| class-transformer | Transformação de objetos e dados |
+| Swagger | Documentação e visualização interativa dos endpoints |
+| Git | Controle de versão do código-fonte |
+| GitHub | Hospedagem do repositório e colaboração entre os integrantes |
+| Postman | Testes e validação das requisições HTTP |
 
 ## 🏗️ Arquitetura
 
-Controller → Service → Repository → Database → Response
+O projeto utiliza uma arquitetura modular baseada nos recursos oferecidos pelo NestJS.
 
-### 🔹 Camadas
+### Fluxo de funcionamento
 
--   Controller → Entrada HTTP\
--   Service → Regras de negócio\
--   Repository/ORM → Acesso a dados\
--   Module → Organização\
--   DTO → Validação e tipagem
+```text
+Requisição HTTP
+      |
+      v
+Controller
+      |
+      v
+Service
+      |
+      v
+Prisma ORM
+      |
+      v
+Banco de Dados
+      |
+      v
+Resposta HTTP
+```
 
-------------------------------------------------------------------------
+### Camadas da aplicação
 
-## 📂 Estrutura
+- **Module:** organiza os componentes e funcionalidades da aplicação.
+- **Controller:** recebe e direciona as requisições HTTP.
+- **Service:** concentra as regras de negócio.
+- **DTO:** define a estrutura e validação dos dados recebidos.
+- **Prisma ORM:** realiza as operações de acesso ao banco de dados.
+- **Guards:** controlam o acesso às rotas protegidas.
 
-    src/
-    ├── modules/
-    │   └── users/
-    │       ├── dto/
-    │       ├── users.controller.ts
-    │       ├── users.service.ts
-    │       └── users.module.ts
-    ├── database/
-    ├── config/
-    ├── app.module.ts
-    └── main.ts
+## 📂 Estrutura do projeto
 
-------------------------------------------------------------------------
+```text
+src/
+├── common/
+│   ├── guards/
+│   └── services/
+│
+├── modules/
+│   ├── auth/
+│   ├── users/
+│   ├── products/
+│   └── carts/
+│       ├── carts.controller.ts
+│       ├── carts.service.ts
+│       ├── carts.module.ts
+│       └── carts.dto.ts
+│
+├── prisma/
+│   └── prisma.service.ts
+│
+├── app.module.ts
+└── main.ts
+
+prisma/
+└── schema.prisma
+```
+
+*Estrutura resumida dos principais diretórios e módulos da aplicação.*
 
 ## ⚙️ Instalação
 
-``` bash
+Primeiramente, clone o repositório:
+
+```bash
 git clone https://github.com/RicardoNsm/markethub-backend-nestjs.git
+```
+
+Entre na pasta do projeto:
+
+```bash
 cd markethub-backend-nestjs
+```
+
+Instale as dependências:
+
+```bash
 npm install
 ```
 
-------------------------------------------------------------------------
-
 ## 🔧 Configuração
 
-``` bash
-cp .env.example .env
-```
+Crie um arquivo `.env` na raiz do projeto, utilizando o `.env.example` como referência, caso esteja disponível.
 
-Exemplo:
+Configure as variáveis necessárias para a execução da aplicação, incluindo:
 
-    DB_HOST=localhost
-    DB_PORT=3306
-    DB_USER=root
-    DB_PASS=
-    DB_NAME=api_database
+- Conexão com o banco de dados.
+- Chave secreta utilizada na autenticação JWT.
+- Outras configurações exigidas pelos módulos da aplicação.
 
-    APP_ENV=development
-    APP_DEBUG=true
+> **Importante:** não compartilhe credenciais, tokens ou arquivos `.env` com informações privadas no repositório.
 
-------------------------------------------------------------------------
+Após configurar o ambiente, execute os comandos do Prisma necessários para preparar o banco de dados, conforme a configuração do projeto.
 
 ## ▶️ Execução
 
-``` bash
-# desenvolvimento
-npm run start:dev
+Para iniciar a aplicação em modo de desenvolvimento:
 
-# produção
+```bash
+npm run start:dev
+```
+
+Para compilar o projeto:
+
+```bash
 npm run build
+```
+
+Para iniciar a versão de produção:
+
+```bash
 npm run start:prod
 ```
 
-------------------------------------------------------------------------
+Durante o desenvolvimento, a API pode ser acessada localmente em:
+
+```text
+http://localhost:3000
+```
 
 ## 🌐 Endpoints
 
+As rotas versionadas utilizam o prefixo `/v1`.
+
+### 🔐 Auth
+
+Módulo responsável pela autenticação dos usuários e geração de tokens de acesso.
+
+A autenticação utiliza JWT para permitir o acesso às funcionalidades protegidas da aplicação.
+
 ### 👤 Users
 
-  Método   Rota         Descrição
-  -------- ------------ ------------------
-  GET      /users       Lista usuários
-  GET      /users/:id   Busca por ID
-  POST     /users       Cria usuário
-  PUT      /users/:id   Atualiza usuário
-  DELETE   /users/:id   Remove usuário
+Módulo responsável pelo gerenciamento dos usuários da plataforma.
 
-------------------------------------------------------------------------
+Entre suas responsabilidades estão o cadastro, gerenciamento e identificação dos usuários.
 
-## 🔎 Exemplo de Resposta
+### 🛍️ Products
 
-``` json
+Módulo responsável pelo gerenciamento dos produtos disponíveis na plataforma.
+
+Contempla informações dos produtos, disponibilidade e dados necessários para as funcionalidades de comércio eletrônico.
+
+### 🛒 Carts
+
+Módulo responsável pelo gerenciamento do carrinho de compras dos usuários autenticados.
+
+Todas as rotas do carrinho exigem autenticação JWT.
+
+| **Método** | **Rota** | **Descrição** |
+|---|---|---|
+| GET | `/v1/carts` | Lista os produtos do carrinho |
+| POST | `/v1/carts` | Adiciona um produto ao carrinho |
+| PUT | `/v1/carts/:productId` | Atualiza a quantidade de um produto |
+| DELETE | `/v1/carts/:productId` | Remove um produto específico |
+| DELETE | `/v1/carts` | Remove todos os produtos do carrinho |
+
+#### Adicionar produto ao carrinho
+
+**POST** `/v1/carts`
+
+Corpo da requisição:
+
+```json
 {
-  "success": true,
-  "data": [
-    {
-      "id": 1,
-      "name": "Marcelo",
-      "email": "marcelo@email.com"
-    }
-  ]
+  "productId": "uuid-do-produto"
 }
 ```
 
-------------------------------------------------------------------------
+#### Atualizar quantidade de um produto
 
-## 🔐 Segurança
+**PUT** `/v1/carts/:productId`
 
--   Validação com class-validator\
--   DTOs tipados\
--   Variáveis de ambiente protegidas
+Corpo da requisição:
 
-Estrutura pronta para:
+```json
+{
+  "quantity": 2
+}
+```
 
--   JWT\
--   Guards\
--   Interceptors\
--   Rate limiting\
--   Logs
+#### Funcionalidades do carrinho
 
-------------------------------------------------------------------------
+- Associação dos itens ao usuário autenticado.
+- Verificação da existência dos produtos.
+- Verificação da disponibilidade dos produtos.
+- Verificação do estoque.
+- Adição de produtos ao carrinho.
+- Atualização da quantidade de produtos.
+- Remoção individual de produtos.
+- Limpeza completa do carrinho.
+
+## 🔒 Segurança
+
+A API utiliza mecanismos para proteger os dados e controlar o acesso às funcionalidades.
+
+Entre os recursos utilizados estão:
+
+- Autenticação por JWT.
+- Proteção de rotas utilizando Guards.
+- Validação de dados com DTOs e class-validator.
+- Configuração de variáveis de ambiente.
+- Controle de acesso às funcionalidades autenticadas.
+
+## 🧪 Testes
+
+Durante o desenvolvimento, as requisições HTTP podem ser testadas utilizando ferramentas como Postman.
+
+Para verificar se o projeto compila corretamente, execute:
+
+```bash
+npm run build
+```
 
 ## 📈 Roadmap
 
--   [ ] Autenticação JWT\
--   [ ] Guards de autenticação\
--   [ ] Logs estruturados\
--   [ ] Paginação\
--   [ ] Docker\
--   [ ] Testes automatizados
+O projeto está em desenvolvimento e poderá receber novas funcionalidades e melhorias.
 
-------------------------------------------------------------------------
+- [x] Estrutura inicial da API com NestJS.
+- [x] Organização modular.
+- [x] Integração com Prisma ORM.
+- [x] Autenticação JWT.
+- [x] Proteção de rotas.
+- [x] Implementação das operações do carrinho.
+- [ ] Testes automatizados.
+- [ ] Paginação e otimização das consultas.
+- [ ] Logs estruturados.
+- [ ] Docker.
+- [ ] Melhorias e novas funcionalidades da plataforma.
 
-## 📝 Padrão de Commits
+## 📝 Padrão de commits
 
--   feat: nova funcionalidade\
--   fix: correção\
--   refactor: refatoração\
--   docs: documentação\
--   chore: manutenção
+Para manter o histórico de alterações organizado, o projeto utiliza os seguintes prefixos:
 
-------------------------------------------------------------------------
+| **Prefixo** | **Finalidade** |
+|---|---|
+| `feat` | Adição de novas funcionalidades |
+| `fix` | Correção de problemas |
+| `refactor` | Refatoração de código |
+| `docs` | Alterações na documentação |
+| `chore` | Tarefas de manutenção |
+| `test` | Adição ou alteração de testes |
+
+Exemplo:
+
+```bash
+git commit -m "feat: implement cart module"
+```
 
 ## 🤝 Contribuição
 
-``` bash
-git checkout -b feature/nova-feature
-git commit -m "feat: adiciona nova funcionalidade"
-git push origin feature/nova-feature
+As contribuições são realizadas por meio de branches e Pull Requests, permitindo que as alterações sejam revisadas pelos integrantes da equipe.
+
+Fluxo de contribuição:
+
+```bash
+git checkout -b feature/nova-funcionalidade
+git add .
+git commit -m "feat: descrição da funcionalidade"
+git push origin feature/nova-funcionalidade
 ```
 
-Abra um Pull Request 🚀
+Após enviar as alterações, abra um Pull Request para revisão da equipe.
 
-------------------------------------------------------------------------
+## 👥 Equipe de desenvolvimento
 
-## 👥 Autores
+| **Integrante** | **GitHub** |
+|---|---|
+| Marcelo Henrique | [@marcelohasilva](https://github.com/marcelohasilva) |
+| Ricardo João | [@RicardoNsm](https://github.com/RicardoNsm) |
+| Gabriel Lopes | [@Gabriel-lopes06](https://github.com/Gabriel-lopes06) |
+| Thiago Ruan | [@ThyagoRuan](https://github.com/ThyagoRuan) |
 
-- [Marcelo Henrique](https://github.com/marcelohasilva)
-- [Ricardo João](https://github.com/RicardoNsm)
-- [Gabriel Lopes](https://github.com/Gabriel-lopes06)
-- [Gabriel Ramos](https://github.com/gb-ramos01)
-- [Thiago Ruan](https://github.com/ThyagoRuan)
+---
+
+<p align="center">
+  Desenvolvido em equipe como parte do projeto MarketHub.
+</p>

@@ -1,24 +1,26 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator'
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsUUID } from 'class-validator';
 
 export class FavoritesRequestDTO {
-  @ApiProperty({ description: 'user id' })
-  @IsString()
+  @ApiProperty({ description: 'ID do produto' })
   @IsUUID()
   @IsNotEmpty()
-  userId!: string
-
-  @ApiProperty({ description: 'product id' })
-  @IsString()
-  @IsUUID()
-  @IsNotEmpty()
-  productId!: string
+  productId!: string;
 }
 
 export class FavoritesListItemDTO {
-  @ApiProperty() id!: string
-  @ApiProperty() userId!: string
-  @ApiProperty() productId!: string
-  @ApiProperty({ format: 'date-time' }) createdAT!: string
-  @ApiProperty({ format: 'date-time' }) updatedAT!: string
+  @ApiProperty()
+  id!: string;
+
+  @ApiProperty()
+  userId!: string;
+
+  @ApiProperty()
+  productId!: string;
+
+  @ApiProperty({ format: 'date-time' })
+  createdAt!: string;
+
+  @ApiProperty({ format: 'date-time' })
+  updatedAt!: string;
 }
