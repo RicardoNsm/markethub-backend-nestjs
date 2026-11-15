@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Prisma } from '@prisma/client'
 import { RequestContextService } from '../../common/services/request-context/request-context.service'
 import { PrismaService } from '../../prisma/prisma.service'
-import { ShopeeService } from '../shopee/shopee.service'
-import { generateTrackingId } from '../shopee/utils/generate-tracking-id'
+import { ShopeeService } from '../affiliates/integrations/shopee/shopee.service'
+import { generateTrackingId } from '../affiliates/integrations/shopee/utils/generate-tracking-id'
 import { UsersService } from '../users/users.service'
 import { ProductsRequestDTO } from './products.dto'
 
@@ -127,8 +127,6 @@ export class ProductsService {
         images: true,
       },
     })
-
-  
   }
 
   update(id: string, data: ProductsRequestDTO) {

@@ -44,6 +44,7 @@ export class ProductsController {
   findAll() {
     return this.productsService.findAll()
   }
+  
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   @ApiResponse({
